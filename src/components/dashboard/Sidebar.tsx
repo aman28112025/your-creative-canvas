@@ -1,9 +1,10 @@
-import { Home, Target, Scan, Zap, Shield, Bot, Activity, Server, Users } from "lucide-react";
+import { Home, Target, Activity, Info } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavItem {
   label: string;
   icon?: React.ReactNode;
-  active?: boolean;
+  path: string;
 }
 
 interface NavSection {
@@ -15,48 +16,27 @@ const navSections: NavSection[] = [
   {
     title: "",
     items: [
-      { label: "Home", icon: <Home size={16} /> },
+      { label: "Home", icon: <Home size={16} />, path: "/" },
     ],
   },
   {
     title: "AI RED TEAMING",
     items: [
-      { label: "Dashboard", icon: <Activity size={16} />, active: true },
-      { label: "Targets", icon: <Target size={16} /> },
-      { label: "Scans", icon: <Scan size={16} /> },
-      { label: "Custom Attacks", icon: <Zap size={16} /> },
+      { label: "Dashboard", icon: <Activity size={16} />, path: "/" },
+      { label: "Adversary", icon: <Target size={16} />, path: "/adversary" },
     ],
   },
   {
-    title: "AI RUNTIME",
+    title: "INFORMATION",
     items: [
-      { label: "AI Runtime Firewall", icon: <Shield size={16} /> },
-      { label: "API Applications", icon: <Server size={16} /> },
-      { label: "AI Sessions", icon: <Bot size={16} /> },
-    ],
-  },
-  {
-    title: "AI AGENT SECURITY",
-    items: [
-      { label: "Enterprise Agents", icon: <Users size={16} /> },
-      { label: "AI Sessions", icon: <Bot size={16} /> },
-    ],
-  },
-  {
-    title: "AI AGENT SECURITY",
-    items: [
-      { label: "AI Sessions", icon: <Bot size={16} /> },
-    ],
-  },
-  {
-    title: "AI AGENT SECURITY",
-    items: [
-      { label: "Enterprise Agents", icon: <Users size={16} /> },
+      { label: "About", icon: <Info size={16} />, path: "/about" },
     ],
   },
 ];
 
 const Sidebar = () => {
+  const location = useLocation();
+
   return (
     <aside className="w-56 min-h-screen bg-sidebar border-r border-sidebar-border flex flex-col">
       <div className="p-4 border-b border-sidebar-border">
@@ -70,13 +50,14 @@ const Sidebar = () => {
               <div className="nav-section-title">{section.title}</div>
             )}
             {section.items.map((item, itemIndex) => (
-              <div
+              <Link
                 key={itemIndex}
-                className={`nav-item ${item.active ? "nav-item-active" : ""}`}
+                to={item.path}
+                className={`nav-item ${location.pathname === item.path ? "nav-item-active" : ""}`}
               >
                 {item.icon}
                 <span>{item.label}</span>
-              </div>
+              </Link>
             ))}
           </div>
         ))}
