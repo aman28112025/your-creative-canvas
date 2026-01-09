@@ -1,5 +1,7 @@
-import { Plus, Bot } from "lucide-react";
+import { useState } from "react";
+import { Plus, Bot, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,6 +19,14 @@ const agentsData = [
 ];
 
 const Agents = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredAgents = agentsData.filter((agent) =>
+    agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    agent.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    agent.status.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
@@ -32,6 +42,16 @@ const Agents = () => {
           </Button>
         </div>
 
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search agents..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 max-w-sm"
+          />
+        </div>
+
         <div className="rounded-lg border border-border bg-card">
           <Table>
             <TableHeader>
@@ -43,7 +63,7 @@ const Agents = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {agentsData.map((agent) => (
+              {filteredAgents.map((agent) => (
                 <TableRow key={agent.id}>
                   <TableCell className="font-medium">{agent.name}</TableCell>
                   <TableCell>
