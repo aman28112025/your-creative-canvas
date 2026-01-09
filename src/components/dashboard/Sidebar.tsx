@@ -1,4 +1,4 @@
-import { Home, Target, Activity, Info } from "lucide-react";
+import { Home, Target, Activity, Info, Bot } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 interface NavItem {
@@ -24,6 +24,7 @@ const navSections: NavSection[] = [
     items: [
       { label: "Dashboard", icon: <Activity size={16} />, path: "/" },
       { label: "Adversary", icon: <Target size={16} />, path: "/adversary" },
+      { label: "Agents", icon: <Bot size={16} />, path: "/agents" },
     ],
   },
   {
