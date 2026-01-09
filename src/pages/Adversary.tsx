@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { Search } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
+import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const adversaryData = [
@@ -13,6 +16,14 @@ const adversaryData = [
 ];
 
 const Adversary = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredData = adversaryData.filter((item) =>
+    item.attackName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.miterId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.os.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
@@ -25,6 +36,16 @@ const Adversary = () => {
           </p>
         </header>
 
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search techniques..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 max-w-sm"
+          />
+        </div>
+
         <div className="rounded-lg border bg-card">
           <Table>
             <TableHeader>
@@ -35,7 +56,7 @@ const Adversary = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adversaryData.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium">{item.attackName}</TableCell>
                   <TableCell>
